@@ -26,7 +26,10 @@ rec {
   home.keyboard.options = [ "caps:swapescape" ];
 
   home.packages = with pkgs; [
+    baobab
+    borgbackup
     bundler
+    cmake
     gimp
     gnupg
     go
@@ -39,7 +42,7 @@ rec {
     podman-compose
     protobuf_27
     rectangle
-    # (lib.hiPrio ruby)
+    (lib.hiPrio ruby)
     signal-desktop-bin
     thunderbird
     yarn
@@ -64,6 +67,7 @@ rec {
       ssh-add --apple-use-keychain ~/.ssh/id_rsa 2>/dev/null
     '';
     shellAliases = {
+      libreoffice = "/Applications/LibreOffice.app/Contents/MacOS/soffice";
       rebuild = "sudo darwin-rebuild switch --flake ~/nix";
       vim = "nvim";
     };
@@ -91,6 +95,7 @@ rec {
     # https://github.com/nix-community/home-manager/issues/6955#issuecomment-2878146879
     package = pkgs.firefox-bin.overrideAttrs (_: rec {
       override = _: pkgs.firefox-bin;
+      extraPolicies.DisableAppUpdate = true;
     });
     profiles = {
       default = {
