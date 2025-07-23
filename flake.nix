@@ -23,7 +23,7 @@
     };
 
     mac-app-util = {
-      url = "github:hraban/mac-app-util/link-contents";
+      url = "github:hraban/mac-app-util";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -45,7 +45,7 @@
       homebrew = {
         enable = true;
         taps = [ "leoafarias/fvm" ];
-        brews = [ "circleci" "cocoapods" "fvm" "gnupg" "qemu" "ruby-build" ];
+        brews = [ "bundletool" "circleci" "cocoapods" "fvm" "gnupg" "qemu" "ruby-build" ];
         casks = [ "ferdium" "libreoffice" "mullvadvpn" "standard-notes" "stremio" ];
         onActivation = {
           autoUpdate = true;

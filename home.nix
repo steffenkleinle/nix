@@ -36,11 +36,12 @@ rec {
     jdk17
     jitsi-meet-electron
     keepassxc
+    maccy
     neovide
     nodejs
     podman
     podman-compose
-    protobuf_27
+    protobuf
     rectangle
     (lib.hiPrio ruby)
     signal-desktop-bin
@@ -92,11 +93,6 @@ rec {
     };
   in {
     enable = true;
-    # https://github.com/nix-community/home-manager/issues/6955#issuecomment-2878146879
-    package = pkgs.firefox-bin.overrideAttrs (_: rec {
-      override = _: pkgs.firefox-bin;
-      extraPolicies.DisableAppUpdate = true;
-    });
     profiles = {
       default = {
         id = 0;
@@ -123,9 +119,6 @@ rec {
         settings = settings;
         search = search;
       };
-    };
-    policies = {
-      DisableAppUpdate = true;
     };
   };
 
