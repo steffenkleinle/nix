@@ -2,7 +2,7 @@
 
 rec {
   imports = [ 
-    inputs.nixvim.homeManagerModules.nixvim
+    inputs.nixvim.homeModules.nixvim
     inputs.mac-app-util.homeManagerModules.default
   ];
 
@@ -43,7 +43,7 @@ rec {
     podman-compose
     protobuf
     rectangle
-    (lib.hiPrio ruby)
+    # (lib.hiPrio ruby)
     signal-desktop-bin
     thunderbird
     yarn

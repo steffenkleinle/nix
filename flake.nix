@@ -44,9 +44,9 @@
 
       homebrew = {
         enable = true;
-        taps = [ "leoafarias/fvm" ];
+        taps = [ "leoafarias/fvm" "th-ch/youtube-music" ];
         brews = [ "bundletool" "circleci" "cocoapods" "fvm" "gnupg" "qemu" "ruby-build" ];
-        casks = [ "ferdium" "libreoffice" "mullvadvpn" "standard-notes" "stremio" ];
+        casks = [ "ferdium" "libreoffice" "mullvadvpn" "standard-notes" "stremio" "youtube-music" ];
         onActivation = {
           autoUpdate = true;
           cleanup = "uninstall";
