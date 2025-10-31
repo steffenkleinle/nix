@@ -17,11 +17,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nixpkgs-firefox-darwin = {
-      url = "github:bandithedoge/nixpkgs-firefox-darwin";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     mac-app-util = {
       url = "github:hraban/mac-app-util";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -29,6 +24,13 @@
   };
 
   outputs = inputs @ { self, nix-darwin, nixpkgs, home-manager, nixvim, mac-app-util, ... }: let
+    overlays = [
+    (final: prev: {
+     sbcl = prev.sbcl.overrideAttrs (old: {
+         doCheck = false;
+       });
+     })
+    ];
     configuration = { pkgs, ... }: {
       users.knownUsers = [ "st" ];
       users.users.st = {
@@ -46,7 +48,7 @@
         enable = true;
         taps = [ "leoafarias/fvm" "th-ch/youtube-music" ];
         brews = [ "bundletool" "circleci" "cocoapods" "fvm" "gnupg" "qemu" "ruby-build" ];
-        casks = [ "ferdium" "libreoffice" "mullvadvpn" "standard-notes" "stremio" "youtube-music" ];
+        casks = [ "ferdium" "libreoffice" "mullvad-vpn" "standard-notes" "stremio" "youtube-music" ];
         onActivation = {
           autoUpdate = true;
           cleanup = "uninstall";
@@ -112,12 +114,14 @@
         configuration
         mac-app-util.darwinModules.default
         home-manager.darwinModules.home-manager {
-          nixpkgs.overlays = [ inputs.nixpkgs-firefox-darwin.overlay ];
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
           home-manager.extraSpecialArgs = {inherit inputs;};
           home-manager.verbose = true;
           home-manager.users.st = import ./home.nix;
+        }
+        {
+          nixpkgs.overlays = overlays;
         }
       ({ pkgs, ... }: {
        nixpkgs.config = {

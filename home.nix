@@ -14,6 +14,8 @@ rec {
   home.sessionVariables = {
     ANDROID_HOME = "/Users/st/Library/Android/sdk";
     FASTLANE_SKIP_UPDATE_CHECK = "true";
+    # react-native dev-tools
+    BROWSER = "chromium";
     # https://podman-desktop.io/tutorial/testcontainers-with-podman
     TESTCONTAINERS_RYUK_DISABLED = "true";
     TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE = "/var/run/docker.sock";
@@ -30,11 +32,10 @@ rec {
     borgbackup
     bundler
     cmake
-    gimp
     gnupg
     go
     jdk17
-    jitsi-meet-electron
+    # jitsi-meet-electron
     keepassxc
     maccy
     neovide
@@ -43,7 +44,7 @@ rec {
     podman-compose
     protobuf
     rectangle
-    # (lib.hiPrio ruby)
+    (lib.hiPrio ruby)
     signal-desktop-bin
     thunderbird
     yarn
