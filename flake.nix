@@ -48,7 +48,7 @@
         enable = true;
         taps = [ "leoafarias/fvm" "th-ch/youtube-music" ];
         brews = [ "bundletool" "circleci" "cocoapods" "fvm" "gnupg" "qemu" "ruby-build" ];
-        casks = [ "balenaetcher" "ferdium" "libreoffice" "mullvad-vpn" "standard-notes" "stremio" "youtube-music" ];
+        casks = [ "ferdium" "libreoffice" "mullvad-vpn" "standard-notes" "stremio" "youtube-music" ];
         onActivation = {
           autoUpdate = true;
           cleanup = "uninstall";
