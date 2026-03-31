@@ -18,8 +18,8 @@
     };
 
     mac-app-util = {
-      url = "github:hraban/mac-app-util";
-      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:mcflis/mac-app-util/fix/missing-icons";
+      # inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
@@ -48,7 +48,7 @@
         enable = true;
         taps = [ "leoafarias/fvm" "th-ch/youtube-music" ];
         brews = [ "bundletool" "circleci" "cocoapods" "fvm" "gnupg" "qemu" "ruby-build" ];
-        casks = [ "ferdium" "libreoffice" "mullvad-vpn" "standard-notes" "stremio" "youtube-music" ];
+        casks = [ "balenaetcher" "ferdium" "libreoffice" "mullvad-vpn" "standard-notes" "stremio" "youtube-music" ];
         onActivation = {
           autoUpdate = true;
           cleanup = "uninstall";

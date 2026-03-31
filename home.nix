@@ -31,23 +31,24 @@ rec {
     baobab
     borgbackup
     bundler
+    claude-code
     cmake
+    firefox
     gnupg
     go
     jdk17
     # jitsi-meet-electron
     keepassxc
-    maccy
-    neovide
+    nix-direnv
     nodejs
     podman
     podman-compose
     protobuf
     rectangle
     (lib.hiPrio ruby)
-    signal-desktop-bin
+    signal-desktop
     thunderbird
-    yarn
+    yarn-berry
   ];
 
   programs.kitty = {
