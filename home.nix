@@ -47,6 +47,7 @@ rec {
     rectangle
     (lib.hiPrio ruby)
     signal-desktop
+    syncthing-macos
     thunderbird
     yarn-berry
   ];
