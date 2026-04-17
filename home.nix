@@ -68,7 +68,7 @@ rec {
     interactiveShellInit = ''
       set fish_greeting
       eval "$(/opt/homebrew/bin/brew shellenv)"
-      ssh-add --apple-use-keychain ~/.ssh/id_rsa 2>/dev/null
+      ssh-add --apple-use-keychain ~/.ssh/id_ed25519 2>/dev/null
     '';
     shellAliases = {
       libreoffice = "/Applications/LibreOffice.app/Contents/MacOS/soffice";
@@ -136,7 +136,7 @@ rec {
         UseKeychain yes
         HostName github.com
         User git
-        IdentityFile ~/.ssh/id_rsa
+        IdentityFile ~/.ssh/id_ed25519
         IdentityFile ~/.ssh/id_ed25519_signing
     '';
   };
