@@ -28,7 +28,6 @@ rec {
   home.keyboard.options = [ "caps:swapescape" ];
 
   home.packages = with pkgs; [
-    baobab
     borgbackup
     bundler
     claude-code
@@ -69,6 +68,7 @@ rec {
       set fish_greeting
       eval "$(/opt/homebrew/bin/brew shellenv)"
       ssh-add --apple-use-keychain ~/.ssh/id_ed25519 2>/dev/null
+      ssh-add --apple-use-keychain ~/.ssh/id_ed25519_signing 2>/dev/null
     '';
     shellAliases = {
       libreoffice = "/Applications/LibreOffice.app/Contents/MacOS/soffice";
