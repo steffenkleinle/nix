@@ -36,7 +36,6 @@ rec {
     gnupg
     go
     jdk17
-    # jitsi-meet-electron
     keepassxc
     nix-direnv
     nodejs
@@ -48,7 +47,7 @@ rec {
     signal-desktop
     syncthing-macos
     thunderbird
-    yarn-berry
+    # yarn-berry
   ];
 
   programs.kitty = {
