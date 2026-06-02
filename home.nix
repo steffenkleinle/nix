@@ -73,6 +73,7 @@ rec {
       libreoffice = "/Applications/LibreOffice.app/Contents/MacOS/soffice";
       rebuild = "sudo darwin-rebuild switch --flake ~/nix";
       vim = "nvim";
+      yarn = "corepack yarn";
     };
   };
 
