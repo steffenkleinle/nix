@@ -3,14 +3,13 @@
 rec {
   imports = [ 
     inputs.nixvim.homeModules.nixvim
-    inputs.mac-app-util.homeManagerModules.default
   ];
 
   fonts.fontconfig.enable = true;
 
   home.username = "st";
   home.homeDirectory = "/Users/st";
-  home.stateVersion = "25.05";
+  home.stateVersion = "26.05";
   home.sessionVariables = {
     ANDROID_HOME = "/Users/st/Library/Android/sdk";
     FASTLANE_SKIP_UPDATE_CHECK = "true";
@@ -30,14 +29,18 @@ rec {
   home.packages = with pkgs; [
     borgbackup
     bundler
-    claude-code
     cmake
+    colima
+    devcontainer
+    docker-client
     firefox
     gnupg
     go
     jdk17
     keepassxc
+    libfido2
     nix-direnv
+    openssh
     nodejs
     podman
     podman-compose
@@ -47,7 +50,7 @@ rec {
     signal-desktop
     syncthing-macos
     thunderbird
-    # yarn-berry
+    yubikey-manager
   ];
 
   programs.kitty = {
@@ -66,14 +69,21 @@ rec {
     interactiveShellInit = ''
       set fish_greeting
       eval "$(/opt/homebrew/bin/brew shellenv)"
-      ssh-add --apple-use-keychain ~/.ssh/id_ed25519 2>/dev/null
-      ssh-add --apple-use-keychain ~/.ssh/id_ed25519_signing 2>/dev/null
+      /usr/bin/ssh-add --apple-use-keychain ~/.ssh/id_ed25519 2>/dev/null
+      /usr/bin/ssh-add --apple-use-keychain ~/.ssh/id_ed25519_signing 2>/dev/null
+
+      set -l sock (ls -t ~/.ssh/agent/s.c7awK9uv4P.agent.* 2>/dev/null | head -n1)
+      if test -n "$sock"
+        set -gx HOST_SSH_AUTH_SOCK $sock
+      end
     '';
     shellAliases = {
+      dc = "devcontainer up --workspace-folder . --config ~/devcontainer/devcontainer.json --log-level info --log-format text";
       libreoffice = "/Applications/LibreOffice.app/Contents/MacOS/soffice";
       rebuild = "sudo darwin-rebuild switch --flake ~/nix";
       vim = "nvim";
       yarn = "corepack yarn";
+      pnpm = "corepack pnpm";
     };
   };
 
@@ -131,22 +141,54 @@ rec {
   programs.ssh = {
     enable = true;
     extraConfig = ''
+      IgnoreUnknown UseKeychain
+
       Host github.com
-        AddKeysToAgent yes
-        UseKeychain yes
         HostName github.com
         User git
         IdentityFile ~/.ssh/id_ed25519
         IdentityFile ~/.ssh/id_ed25519_signing
+        IdentitiesOnly yes
+        AddKeysToAgent yes
+        UseKeychain yes
+        PreferredAuthentications publickey
+        IdentityAgent SSH_AUTH_SOCK
+
+      Host opencode01.tuerantuer.org
+        HostName opencode01.tuerantuer.org
+        User opencode
+        IdentityFile ~/.ssh/id_ed25519_sk
+        IdentitiesOnly yes
+        PubkeyAuthentication yes
+        IdentityAgent HOST_SSH_AUTH_SOCK
     '';
   };
 
   services.syncthing.enable = true;
 
-  systemd.user.services.ssh-add = {
-    description = "Add ssh key";
-    serviceConfig.Type = "simple";
-    serviceConfig.ExecStart = "${pkgs.bash}/bin/bash ssh-add --apple-use-keychain ~/.ssh/id_rsa";
-    wantedBy = [ "default.target" ];
+  launchd.agents.colima = {
+    enable = true;
+    config = {
+      Label            = "io.colima.${config.home.username}";
+      RunAtLoad        = true;
+      KeepAlive        = true;
+      ProgramArguments = [
+        "${pkgs.colima}/bin/colima" "start" "--foreground"
+        "--vm-type"    "vz"
+        "--mount-type" "sshfs"
+        "--cpu"        "4"
+        "--memory"     "8"
+        "--disk"       "80"
+      ];
+      EnvironmentVariables = {
+        PATH = lib.makeBinPath [
+          pkgs.colima
+          pkgs.docker-client
+        ] + ":/usr/bin:/bin:/usr/sbin:/sbin";
+        HOME = config.home.homeDirectory;
+      };
+      StandardOutPath  = "${config.home.homeDirectory}/Library/Logs/colima.out.log";
+      StandardErrorPath = "${config.home.homeDirectory}/Library/Logs/colima.err.log";
+    };
   };
 }

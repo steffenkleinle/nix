@@ -1,4 +1,7 @@
 {
+  # https://github.com/nix-community/nixvim/issues/4426#issuecomment-4714025287
+  nixpkgs.useGlobalPackages = true;
+
   enable = true;
   defaultEditor = true;
   colorschemes = {

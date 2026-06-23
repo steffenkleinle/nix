@@ -3,27 +3,19 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
     nix-darwin = {
-      url = "github:LnL7/nix-darwin/master";
-      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:LnL7/nix-darwin";
     };
 
     home-manager = {
-      url = "github:nix-community/home-manager/master";
-      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:nix-community/home-manager";
     };
 
     nixvim = {
       url = "github:nix-community/nixvim";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    mac-app-util = {
-      url = "github:mcflis/mac-app-util/fix/missing-icons";
-      # inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = inputs @ { self, nix-darwin, nixpkgs, home-manager, nixvim, mac-app-util, ... }: let
+  outputs = inputs @ { self, nix-darwin, nixpkgs, home-manager, nixvim, ... }: let
     overlays = [
     (final: prev: {
      sbcl = prev.sbcl.overrideAttrs (old: {
@@ -53,6 +45,7 @@
           autoUpdate = true;
           cleanup = "uninstall";
           upgrade = true;
+          extraFlags = [ "--force-cleanup" ];
         };
       };
 
@@ -112,13 +105,13 @@
     darwinConfigurations."macbook" = nix-darwin.lib.darwinSystem {
       modules = [ 
         configuration
-        mac-app-util.darwinModules.default
         home-manager.darwinModules.home-manager {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
           home-manager.extraSpecialArgs = {inherit inputs;};
           home-manager.verbose = true;
           home-manager.users.st = import ./home.nix;
+          home-manager.backupFileExtension = "backup";
         }
         {
           nixpkgs.overlays = overlays;
